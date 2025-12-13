@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoFábrica - Painel Principal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="painel-com-botao">
+    <!-- Botão à esquerda do painel -->
+    <a href="ajuste-meta.html" class="botao-lateral">📊 Ajustar Meta Horária</a>
+
+    <!-- Div principal do EcoFábrica -->
+    <div class="container">
+      <h1>🌱 EcoFábrica - Painel de Produção</h1>
+
+      <section class="card">
+        <h2>Registrar Produção Diária</h2>
+        <label for="producao">Produção total (peças):</label>
+        <input type="number" id="producao" placeholder="Ex: 230">
+
+        <label for="desperdicio">Desperdício (peças):</label>
+        <input type="number" id="desperdicio" placeholder="Ex: 10">
+
+        <button id="btnRegistrar">Registrar</button>
+        <button id="btnLimpar">🗑 Limpar Histórico</button>
+
+        <div id="resultado" class="result"></div>
+      </section>
+
+      <section class="card">
+        <h2>Eficiência Acumulada</h2>
+        <div class="barra-container">
+          <div id="barraProgresso" class="barra">0%</div>
+        </div>
+        <p id="estatisticas"></p>
+      </section>
+
+      <section class="card">
+        <h2>Histórico de Produção</h2>
+        <table id="tabelaRegistros">
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Produção</th>
+              <th>Desperdício</th>
+              <th>Eficiência (%)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

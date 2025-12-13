@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuste de Meta Horária - EcoFábrica</title>
+  <link rel="stylesheet" href="ajuste-meta.css">
+<!--Chart.js (biblioteca do gráfico)-->
+<script src="https://cdnjsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Ajuste de Meta Horária</h1>
+
+    <section class="card">
+      <label for="metaDiaria">Meta diária (peças):</label>
+      <input type="number" id="metaDiaria" placeholder="Ex: 240">
+
+      <label for="horasTotais">Carga horária total (horas):</label>
+      <input type="number" id="horasTotais" placeholder="Ex: 9">
+
+      <label for="horaAtual">Hora atual (número):</label>
+      <input type="number" id="horaAtual" placeholder="Ex: 4">
+
+      <label for="producaoReal">Produção realizada até agora (peças):</label>
+      <input type="number" id="producaoReal" placeholder="Ex: 85">
+
+      <button id="btnCalcular">Calcular Nova Meta</button>
+
+      <div id="resultado" class="result"></div>
+      <!-- Área do gráfico-->
+       <canvas id="graficoProgresso"></canvas>
+    </section>
+
+    <a href="index.html" class="voltar">⬅️ Voltar ao Painel Principal</a>
+  </div>
+
+  <script src="ajuste-meta.js"></script>
+</body>
+</html>

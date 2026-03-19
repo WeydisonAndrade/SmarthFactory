@@ -4,12 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ajuste de Meta Horária - EcoFábrica</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="ajuste-meta.css">
-<!--Chart.js (biblioteca do gráfico)-->
-<script src="https://cdnjsdelivr.net/npm/chart.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <span class="top-bar__brand">
+        <svg class="top-bar__brand-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M4 20V6M4 20h16"/>
+          <path d="M8 20V12"/>
+          <path d="M12 20V8"/>
+          <path d="M16 20v-6"/>
+        </svg>
+        EcoFábrica
+      </span>
+      <div class="top-bar__actions">
+        <a href="index.html" class="top-bar__meta" title="Painel OEE">Painel OEE</a>
+        <a href="throughput.html" class="top-bar__meta" title="Ritmo e lead time">Ritmo</a>
+      </div>
+    </div>
+  </header>
+
   <div class="container">
     <h1>🎯 Ajuste de Meta Horária</h1>
 
@@ -29,8 +46,10 @@
       <button id="btnCalcular">Calcular Nova Meta</button>
 
       <div id="resultado" class="result"></div>
-      <!-- Área do gráfico-->
-       <canvas id="graficoProgresso"></canvas>
+
+      <div class="grafico-wrap">
+        <canvas id="graficoProgresso" aria-label="Gráfico de progresso da meta"></canvas>
+      </div>
     </section>
 
     <a href="index.html" class="voltar">⬅️ Voltar ao Painel Principal</a>

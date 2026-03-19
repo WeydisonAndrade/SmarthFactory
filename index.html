@@ -8,49 +8,107 @@
 </head>
 <body>
 
+  <header class="top-bar">
+    <div class="top-bar__inner">
+      <span class="top-bar__brand">
+        <svg class="top-bar__brand-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M4 20V6M4 20h16"/>
+          <path d="M8 20V12"/>
+          <path d="M12 20V8"/>
+          <path d="M16 20v-6"/>
+        </svg>
+        EcoFábrica
+      </span>
+      <a href="ajuste-meta.html" class="top-bar__meta" title="Ajustar meta horária">Ajustar meta</a>
+    </div>
+  </header>
+
   <div class="painel-com-botao">
-    <!-- Botão à esquerda do painel -->
-    <a href="ajuste-meta.html" class="botao-lateral">📊 Ajustar Meta Horária</a>
-
-    <!-- Div principal do EcoFábrica -->
     <div class="container">
-      <h1>🌱 EcoFábrica - Painel de Produção</h1>
+      <h1 class="page-title">Painel de produção</h1>
+      <p class="page-lead">
+        OEE (eficácia global dos equipamentos) = <strong>Disponibilidade × Performance × Qualidade</strong>.
+        A qualidade usa peças boas ÷ produção bruta; disponibilidade e performance entram quando você informa tempo e há meta salva em Ajustar meta.
+        <strong>Ritmo e lead time</strong> estão na página <a href="throughput.html">Ritmo / lotes</a>.
+      </p>
 
-      <section class="card">
-        <h2>Registrar Produção Diária</h2>
-        <label for="producao">Produção total (peças):</label>
-        <input type="number" id="producao" placeholder="Ex: 230">
-
-        <label for="desperdicio">Desperdício (peças):</label>
-        <input type="number" id="desperdicio" placeholder="Ex: 10">
-
-        <button id="btnRegistrar">Registrar</button>
-        <button id="btnLimpar">🗑 Limpar Histórico</button>
-
-        <div id="resultado" class="result"></div>
+      <section class="card kpi-grid" aria-label="Indicadores">
+        <h2 class="kpi-grid__heading">KPIs acumulados</h2>
+        <div class="kpi-cards">
+          <article class="kpi-card">
+            <span class="kpi-card__label">Peças boas</span>
+            <strong id="kpiPecasBoas" class="kpi-card__value">—</strong>
+            <span class="kpi-card__hint">Produção − desperdício</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Taxa de scrap</span>
+            <strong id="kpiScrap" class="kpi-card__value">—</strong>
+            <span class="kpi-card__hint">Desperdício ÷ produção bruta</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Média por registro</span>
+            <strong id="kpiMediaRegistro" class="kpi-card__value">—</strong>
+            <span class="kpi-card__hint">Peças por lançamento</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Melhor / pior OEE</span>
+            <strong id="kpiMinMax" class="kpi-card__value">—</strong>
+            <span class="kpi-card__hint">OEE de cada registro (A×P×Q)</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Realizado hoje × meta</span>
+            <strong id="kpiMetaVs" class="kpi-card__value">—</strong>
+            <span class="kpi-card__hint">Produção bruta de hoje ÷ meta salva ao calcular</span>
+          </article>
+        </div>
       </section>
 
       <section class="card">
-        <h2>Eficiência Acumulada</h2>
+        <h2>Registrar produção diária</h2>
+        <label for="producao">Produção total (peças)</label>
+        <input type="number" id="producao" min="1" step="1" inputmode="numeric" placeholder="Ex.: 230" required>
+
+        <label for="desperdicio">Desperdício (peças)</label>
+        <input type="number" id="desperdicio" min="0" step="1" inputmode="numeric" placeholder="Ex.: 10" required>
+
+        <p class="form-hint">Opcional para OEE completo (mesmo período da produção acima):</p>
+        <label for="tempoPlanej">Tempo planejado (min)</label>
+        <input type="number" id="tempoPlanej" min="0" step="1" inputmode="numeric" placeholder="Ex.: 480 — turno de 8 h">
+
+        <label for="paradas">Paradas e perdas de tempo (min)</label>
+        <input type="number" id="paradas" min="0" step="1" inputmode="numeric" placeholder="Ex.: 45 — deixe 0 se não houver">
+
+        <div class="actions">
+          <button type="button" id="btnRegistrar">Registrar</button>
+          <button type="button" id="btnLimpar" class="btn-danger">Limpar histórico</button>
+        </div>
+
+        <div id="resultado" class="result" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="card">
+        <h2>OEE médio</h2>
         <div class="barra-container">
           <div id="barraProgresso" class="barra">0%</div>
         </div>
-        <p id="estatisticas"></p>
+        <p id="estatisticas" class="estatisticas-texto"></p>
       </section>
 
-      <section class="card">
-        <h2>Histórico de Produção</h2>
-        <table id="tabelaRegistros">
-          <thead>
-            <tr>
-              <th>Data/Hora</th>
-              <th>Produção</th>
-              <th>Desperdício</th>
-              <th>Eficiência (%)</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <section class="card card--table">
+        <h2>Histórico de produção</h2>
+        <div class="table-wrap">
+          <table id="tabelaRegistros">
+            <thead>
+              <tr>
+                <th>Data/hora</th>
+                <th>Produção</th>
+                <th>Desperdício</th>
+                <th>OEE (%)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
     </div>
   </div>

@@ -1,0 +1,21 @@
+/* EcoFábrica — ritmo/lead time (complementa style.css) */
+
+body {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.painel-com-botao .container {
+  max-width: 920px;
+}
+
+#tabelaLotes {
+  min-width: 340px;
+  font-size: 0.8rem;
+}
+
+@media (min-width: 768px) {
+  #tabelaLotes {
+    font-size: 0.875rem;
+  }
+}

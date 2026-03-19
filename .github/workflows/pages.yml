@@ -1,0 +1,56 @@
+# Deploy estático no GitHub Pages (mitiga erros de caminho e valida arquivos antes do upload)
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar arquivos obrigatórios
+        run: |
+          set -e
+          for f in index.html script.js style.css throughput.html throughput.js throughput.css ajuste-meta.html ajuste-meta.js ajuste-meta.css; do
+            test -f "$f" || { echo "Faltando: $f"; exit 1; }
+          done
+          echo "Todos os arquivos do site presentes."
+
+      - name: Montar pasta publicável
+        run: |
+          mkdir -p _site
+          cp index.html script.js style.css \
+            throughput.html throughput.js throughput.css \
+            ajuste-meta.html ajuste-meta.js ajuste-meta.css \
+            _site/
+          : > _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -37,6 +37,7 @@ Aplicação web **estática** voltada à **gestão de produção em manufatura**
 | **CSS3** | Layout **mobile first**, variáveis (`:root`), grid de KPIs, tema visual “painel” (fundo em camadas). |
 | **JavaScript (ES5+)** | Lógica de negócio, validação, `localStorage`, integração com Chart.js. |
 | **Chart.js** (CDN) | Gráficos nas páginas de meta e de throughput. |
+| **GitHub Actions** | Deploy automático no **GitHub Pages** + verificação dos arquivos antes do upload. |
 
 Sem frameworks (React/Vue/etc.), sem build obrigatório — basta servir os arquivos como site estático.
 
@@ -46,6 +47,10 @@ Sem frameworks (React/Vue/etc.), sem build obrigatório — basta servir os arqu
 
 ```
 SmarthFactory/
+├── .github/
+│   └── workflows/
+│       └── pages.yml   # CI: valida arquivos e publica no GitHub Pages
+├── .nojekyll           # Evita processamento Jekyll no Pages
 ├── index.html          # Painel OEE
 ├── script.js
 ├── throughput.html     # Ritmo / lead time / gráfico throughput
@@ -72,6 +77,26 @@ Navegue entre **Painel OEE**, **Ritmo** e **Meta** pelos links do cabeçalho.
 
 ---
 
+## Deploy (GitHub Pages)
+
+O repositório inclui um workflow **`.github/workflows/pages.yml`** que:
+
+1. **Valida** se todos os HTML/CSS/JS do site existem (falha o job se algo estiver faltando — ajuda a pegar erro antes de publicar).
+2. Copia só esses arquivos para uma pasta `_site` e adiciona **`.nojekyll`** (evita o GitHub Pages tentar processar o site com Jekyll e quebrar caminhos).
+3. Publica o artefato no **GitHub Pages**.
+
+### Ativar no GitHub (uma vez)
+
+1. Repositório no GitHub → **Settings** → **Pages**.
+2. Em **Build and deployment** → **Source**: escolha **GitHub Actions** (não “Deploy from branch”).
+3. Faça **push** na branch `main` (ou rode o workflow manualmente em **Actions** → **Deploy GitHub Pages** → **Run workflow**).
+
+A URL ficará no formato: `https://<usuario>.github.io/SmarthFactory/` (ou o nome do seu repositório). Links relativos (`style.css`, `throughput.html`, etc.) continuam corretos nesse endereço.
+
+> **Chart.js** e fontes usam CDN com HTTPS — compatível com Pages.
+
+---
+
 ## Armazenamento local (`localStorage`)
 
 | Chave | Conteúdo |
@@ -87,7 +112,7 @@ Limpar dados do navegador apaga esses registros.
 
 ## Objetivo
 
-Automatizar e visualizar indicadores usados no chão de fábrica (**OEE**, **ritmo vs meta**, **lead time**), servindo como **protótipo educativo**.).
+Automatizar e visualizar indicadores usados no chão de fábrica (**OEE**, **ritmo vs meta**, **lead time**), servindo como **protótipo educativo** ou base para evolução (API, multiusuário, cadastro de máquinas, etc.).
 
 ---
 

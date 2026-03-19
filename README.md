@@ -1,7 +1,96 @@
-# SmarthFactory
-Este é um projeto de uma página destinada à gestores de manufatura, esta página Web calcula o OEE diário de uma sistema produtivo. Além de calcular o OEE o sistema também calcula o Tempo de Ciclo de um processo produtivo podendo estabelecer o total de peças a ser produzido por hora para o atingimento de uma meta produtiva diária estabelecida.
-Este projeto foi desenvolvido por mim, usando:
-HTML
-CSS
-JAVASCRIPT 
-O Objetivo é automatizar cálculos de gestão de processos.
+# SmarthFactory (EcoFábrica)
+
+Aplicação web **estática** voltada à **gestão de produção em manufatura**: cálculo de **OEE** (Overall Equipment Effectiveness), ajuste de **meta horária/diária**, acompanhamento de **ritmo (throughput)** e **lead time** por lote, com visualização em gráficos.
+
+> Projeto de portfólio — os dados ficam no **navegador** (`localStorage`), sem backend.
+
+---
+
+## Funcionalidades
+
+### Painel principal (`index.html`)
+- Registro de **produção bruta** e **desperdício** por lançamento.
+- **OEE** com os fatores **Disponibilidade (A)**, **Performance (P)** e **Qualidade (Q)**  
+  - *Q* = peças boas ÷ produção bruta  
+  - *A* e *P* quando informados **tempo planejado**, **paradas** e **meta** salva em Ajustar meta  
+- KPIs acumulados: peças boas, scrap, média por registro, melhor/pior OEE, realizado no dia × meta diária.
+- Barra de **OEE médio** e histórico tabular (últimos registros).
+
+### Ritmo e lead time (`throughput.html`)
+- Registro de **lotes** com **duração (min)** e produção (e desperdício opcional).
+- **Lead time médio**, **throughput médio (peças/h)**, comparativo **lotes do dia × meta**.
+- Gráfico de barras (**Chart.js**): **ganho** (verde) vs **perda** (vermelho) frente à taxa ideal (peças/h) da meta.
+- Histórico próprio em `localStorage` (`registrosLotes`), com migração única de lotes que antes vinham do painel OEE.
+
+### Ajuste de meta (`ajuste-meta.html`)
+- Cálculo de **meta por hora**, esperado acumulado e **nova meta horária** quando há atraso.
+- Persistência da **meta diária** e **jornada** para uso no OEE, throughput e KPIs.
+- Gráfico de linha (Chart.js): meta esperada × produção real ao longo das horas.
+
+---
+
+## Tecnologias
+
+| Camada | Uso |
+|--------|-----|
+| **HTML5** | Estrutura semântica, formulários, acessibilidade básica (`aria-*`). |
+| **CSS3** | Layout **mobile first**, variáveis (`:root`), grid de KPIs, tema visual “painel” (fundo em camadas). |
+| **JavaScript (ES5+)** | Lógica de negócio, validação, `localStorage`, integração com Chart.js. |
+| **Chart.js** (CDN) | Gráficos nas páginas de meta e de throughput. |
+
+Sem frameworks (React/Vue/etc.), sem build obrigatório — basta servir os arquivos como site estático.
+
+---
+
+## Estrutura do repositório
+
+```
+SmarthFactory/
+├── index.html          # Painel OEE
+├── script.js
+├── throughput.html     # Ritmo / lead time / gráfico throughput
+├── throughput.js
+├── throughput.css
+├── ajuste-meta.html    # Meta horária + gráfico de progresso
+├── ajuste-meta.js
+├── ajuste-meta.css
+├── style.css           # Estilos globais (tema, header, cards, tabelas)
+└── README.md
+```
+
+---
+
+## Como executar localmente
+
+1. Clone ou baixe o repositório.
+2. Abra `index.html` no navegador **ou** use um servidor estático, por exemplo:
+   - **VS Code / Cursor:** extensão “Live Server”.
+   - **Node:** `npx serve .`
+   - **Python:** `python -m http.server 8080`
+
+Navegue entre **Painel OEE**, **Ritmo** e **Meta** pelos links do cabeçalho.
+
+---
+
+## Armazenamento local (`localStorage`)
+
+| Chave | Conteúdo |
+|--------|-----------|
+| `registrosEco` | Histórico do painel OEE |
+| `registrosLotes` | Histórico de lotes (throughput) |
+| `ecoMetaConfig` | Meta diária, horas de jornada, data de salvamento |
+| `ecoLotesMigrado` | Flag de migração lotes ← histórico OEE |
+
+Limpar dados do navegador apaga esses registros.
+
+---
+
+## Objetivo
+
+Automatizar e visualizar indicadores usados no chão de fábrica (**OEE**, **ritmo vs meta**, **lead time**), servindo como **protótipo educativo**.).
+
+---
+
+## Autor
+
+Desenvolvido como projeto de portfólio em **HTML**, **CSS** e **JavaScript**.
